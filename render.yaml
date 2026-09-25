@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: credit-ledger
+    name: covenent-credit-ledger
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
