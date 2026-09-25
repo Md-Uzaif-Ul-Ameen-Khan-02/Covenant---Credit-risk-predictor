@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Covenant — Consumer Credit Underwriting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="frame">
+
+  <header class="letterhead">
+    <div class="letterhead__brand">
+      <svg class="mark" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r="20" />
+        <circle cx="22" cy="22" r="15" />
+        <path d="M27.5 16.2c-1.4-1.2-3.2-1.9-5.1-1.9-4.3 0-7.7 3.4-7.7 7.7s3.4 7.7 7.7 7.7c1.9 0 3.7-.7 5.1-1.9" />
+      </svg>
+      <div class="letterhead__type">
+        <p class="wordmark">Covenant</p>
+        <p class="tagline">Consumer credit underwriting</p>
+      </div>
+    </div>
+    <div class="letterhead__status" id="apiStatus">
+      <span class="dot" id="apiDot"></span>
+      <span id="apiStatusText">checking service</span>
+    </div>
+  </header>
+
+  <div class="workspace">
+
+    <nav class="rail" aria-label="Application sections">
+      <a href="#sec-applicant" class="rail__item" data-target="sec-applicant">Applicant</a>
+      <a href="#sec-loan" class="rail__item" data-target="sec-loan">Loan request</a>
+      <a href="#sec-bureau" class="rail__item" data-target="sec-bureau">Credit file</a>
+    </nav>
+
+    <main class="workspace__main">
+
+      <form class="dossier" id="riskForm" novalidate>
+
+        <section class="panel" id="sec-applicant">
+          <h2>Applicant</h2>
+
+          <div class="row">
+            <label for="person_age">Age</label>
+            <div class="field">
+              <input type="number" id="person_age" name="person_age" min="18" max="100" step="1" value="30" required />
+              <span class="unit">years</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="person_income">Annual income</label>
+            <div class="field">
+              <span class="unit unit--prefix">₹</span>
+              <input type="number" id="person_income" name="person_income" min="0" step="1000" value="600000" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="person_home_ownership">Home ownership</label>
+            <div class="field">
+              <select id="person_home_ownership" name="person_home_ownership" required>
+                <option value="RENT">Renting</option>
+                <option value="MORTGAGE">Mortgage</option>
+                <option value="OWN">Owns outright</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="person_emp_length">Employment length</label>
+            <div class="field">
+              <input type="number" id="person_emp_length" name="person_emp_length" min="0" max="60" step="0.5" value="5" required />
+              <span class="unit">years</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="sec-loan">
+          <h2>Loan request</h2>
+
+          <div class="row">
+            <label for="loan_intent">Purpose</label>
+            <div class="field">
+              <select id="loan_intent" name="loan_intent" required>
+                <option value="PERSONAL">Personal</option>
+                <option value="EDUCATION">Education</option>
+                <option value="MEDICAL">Medical</option>
+                <option value="VENTURE">Venture</option>
+                <option value="HOMEIMPROVEMENT">Home improvement</option>
+                <option value="DEBTCONSOLIDATION">Debt consolidation</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="loan_grade">Loan grade</label>
+            <div class="field">
+              <select id="loan_grade" name="loan_grade" required>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="loan_amnt">Loan amount</label>
+            <div class="field">
+              <span class="unit unit--prefix">₹</span>
+              <input type="number" id="loan_amnt" name="loan_amnt" min="0" step="500" value="100000" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="loan_int_rate">Interest rate</label>
+            <div class="field">
+              <input type="number" id="loan_int_rate" name="loan_int_rate" min="0" max="40" step="0.01" value="11.5" required />
+              <span class="unit">%</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="loan_percent_income">Loan as share of income</label>
+            <div class="field">
+              <input type="number" id="loan_percent_income" name="loan_percent_income" min="0" max="1" step="0.01" value="0.17" required />
+              <span class="unit">ratio</span>
+            </div>
+          </div>
+          <p class="hint" id="percentHint">Calculated from income and loan amount. Edit directly to override.</p>
+        </section>
+
+        <section class="panel" id="sec-bureau">
+          <h2>Credit file</h2>
+
+          <div class="row">
+            <label for="cb_person_default_on_file">Prior default on file</label>
+            <div class="field">
+              <select id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+                <option value="N">No</option>
+                <option value="Y">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="cb_person_cred_hist_length">Credit history length</label>
+            <div class="field">
+              <input type="number" id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" min="0" max="60" step="1" value="6" required />
+              <span class="unit">years</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="submit-row">
+          <button type="submit" id="submitBtn">
+            <span class="btn-label">Assess application</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+          <p class="error-note" id="errorNote" role="alert" hidden></p>
+        </div>
+
+      </form>
+
+      <section class="assessment" id="verdict" aria-live="polite" hidden>
+        <div class="assessment__head">
+          <h2>Assessment</h2>
+          <div class="seal" id="sealBadge">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <circle class="seal__ring-outer" cx="32" cy="32" r="29" />
+              <circle class="seal__ring-inner" cx="32" cy="32" r="23" />
+              <path class="seal__mark" id="sealMark" d="" />
+            </svg>
+            <span class="seal__label" id="sealLabel">Low risk</span>
+          </div>
+        </div>
+
+        <div class="scale">
+          <div class="scale__track">
+            <div class="scale__zone scale__zone--safe"></div>
+            <div class="scale__zone scale__zone--watch"></div>
+            <div class="scale__zone scale__zone--high"></div>
+            <div class="scale__threshold" id="scaleThreshold"></div>
+            <div class="scale__marker" id="scaleMarker"></div>
+          </div>
+          <div class="scale__labels">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <dl class="facts">
+          <div>
+            <dt>Default probability</dt>
+            <dd id="factProb">—</dd>
+          </div>
+          <div>
+            <dt>Decision threshold</dt>
+            <dd id="factThreshold">—</dd>
+          </div>
+          <div>
+            <dt>Model verdict</dt>
+            <dd id="factResult">—</dd>
+          </div>
+        </dl>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="foot">
+    <p>Figures are model estimates, not a lending decision. Recorded for reference only.</p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
